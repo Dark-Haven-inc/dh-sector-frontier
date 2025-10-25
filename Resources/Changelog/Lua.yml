@@ -2065,3 +2065,14 @@ Entries:
   id: 151
   time: '2025-10-25T09:15:02.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/312
+- author: fox76055
+  changes:
+    - type: Tweak
+      message: >-
+        Concord-Aeon: Изменена внутренняя комплектация. Оборудование для химий
+        было вырезано, большие двигатели были вырезаны и заменены на обычные в
+        угоду экономий электроэнергий. Тайл воды удалён. Добавлен небольшой
+        морг.
+  id: 152
+  time: '2025-10-25T09:16:18.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/313
