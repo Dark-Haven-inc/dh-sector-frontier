@@ -1949,3 +1949,14 @@ Entries:
   id: 141
   time: '2025-10-25T05:38:12.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/278
+- author: LeptonComm
+  changes:
+    - type: Tweak
+      message: Переносной зарядник теперь можно вешать на пояс и класть в сумки
+    - type: Tweak
+      message: >-
+        Обычный патронфаб теперь способен создавать большинство калибров для
+        эксп. огнестрельного оружия
+  id: 142
+  time: '2025-10-25T05:40:56.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/296
