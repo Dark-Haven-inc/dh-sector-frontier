@@ -1960,3 +1960,10 @@ Entries:
   id: 142
   time: '2025-10-25T05:40:56.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/296
+- author: ressuw
+  changes:
+    - type: Add
+      message: Шаттл Huke
+  id: 143
+  time: '2025-10-25T05:52:24.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/268
