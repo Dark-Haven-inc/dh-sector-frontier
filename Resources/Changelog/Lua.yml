@@ -2287,3 +2287,14 @@ Entries:
   id: 168
   time: '2025-10-31T12:51:47.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/342
+- author: fox76055
+  changes:
+    - type: Tweak
+      message: >-
+        Concord-Wyvern: Переработан сервисный отдел, добавлен электролизер в
+        мед. отдел, добавлена комната уборщика в инженерный отдел, немного
+        расширен научный отдел, добавлена рояль в бар, накрутка уменьшена до
+        200000.
+  id: 169
+  time: '2025-10-31T17:19:30.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/343
