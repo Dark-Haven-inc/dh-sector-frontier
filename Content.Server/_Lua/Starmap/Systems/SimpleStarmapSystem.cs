@@ -240,7 +240,7 @@ namespace Content.Server._Lua.Starmap.Systems
             var isCentComTarget = _centcomm != null && _centcomm.CentComMap != MapId.Nullspace && star.Map == _centcomm.CentComMap;
             if (!isCentComTarget && !IsAdjacentByHyperlane(currentMap, star, stars))
             { PlayDenySound(consoleUid); _popup.PopupEntity(Loc.GetString("starmap-no-hyperlane"), consoleUid); return; }
-            if (isCentComTarget && !HasComp<AllowFtlToCentComComponent>(shuttleUid.Value))
+            if (isCentComTarget && _centcomm != null && !_centcomm.CentComStarUnlocked && !HasComp<AllowFtlToCentComComponent>(shuttleUid.Value))
             { PlayDenySound(consoleUid); _popup.PopupEntity(Loc.GetString("starmap-no-hyperlane"), consoleUid); return; }
             if (!_shuttleSystem.CanFTL(shuttleUid.Value, out var reason))
             { PlayDenySound(consoleUid); if (!string.IsNullOrEmpty(reason)) _popup.PopupEntity(reason!, consoleUid); return; }
@@ -249,7 +249,7 @@ namespace Content.Server._Lua.Starmap.Systems
             if (TryComp<MapGridComponent>(shuttleUid.Value, out var grid))
             {
                 var xform = Transform(shuttleUid.Value);
-                var bounds = xform.WorldMatrix.TransformBox(grid.LocalAABB).Enlarged(200f);
+                var bounds = xform.WorldMatrix.TransformBox(grid.LocalAABB).Enlarged(ShuttleConsoleSystem.ShuttleFTLRange);
                 foreach (var other in _mapManager.FindGridsIntersecting(xform.MapID, bounds))
                 {
                     if (other.Owner == shuttleUid.Value) continue;
