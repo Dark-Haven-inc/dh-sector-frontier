@@ -20,6 +20,15 @@
             "name": "mag-0"
         },
         {
+<<<<<<< HEAD:Resources/Textures/_Mono/Objects/Weapons/Guns/SMGs/mla73.rsi/meta.json
+=======
+            "name": "mag-3"
+        },
+        {
+            "name": "mag-4"
+        },
+        {
+>>>>>>> b34311cc0e (DH 18-11):Resources/Textures/_DH/Objects/Weapons/Guns/StrikeBall/Rifles/lecter.rsi/meta.json
             "name": "inhand-left",
             "directions": 4
         },

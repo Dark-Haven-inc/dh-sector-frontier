@@ -1,0 +1,49 @@
+- type: entity
+  parent: BookshelfSmoothRight
+  id: BookshelfSmoothRightFilled
+  suffix: right, random filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:NestedSelector
+        tableId: BookshelfEntityTable
+
+- type: entity
+  parent: BookshelfSmoothCenter
+  id: BookshelfSmoothCenterFilled
+  suffix: center, random filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:NestedSelector
+        tableId: BookshelfEntityTable
+
+- type: entity
+  parent: BookshelfSmoothLeft
+  id: BookshelfSmoothLeftFilled
+  suffix: left, random filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:NestedSelector
+        tableId: BookshelfEntityTable
+
+
+- type: entity
+  id: DisabilitiesPeopleCrate
+  name: crates for people with disabilities
+  parent: CratePlastic
+  components:
+  - type: StorageFill
+    contents:
+    - id: VehicleWheelchairFolded
+      amount: 1
+    - id: WhiteCane
+      amount: 1
+    - id: ClothingEyesGlassesJamjar
+      amount: 1
+    - id: ClothingEyesGlassesCheapSunglasses
+      amount: 1
+    - id: ClothingOuterHospitalGown
+      amount: 1
+      

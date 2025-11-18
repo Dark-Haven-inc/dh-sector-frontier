@@ -1,0 +1,10 @@
+- type: cargoProduct
+  id: CrateDisabilitiesPeopleCrate
+  icon:
+    sprite: Objects/Weapons/Guns/Ammunition/Boxes/shotgun.rsi
+    state: dase
+  product: DisabilitiesPeopleCrate
+  cost: 3000
+  category: cargoproduct-category-name-fun
+  group: market
+  

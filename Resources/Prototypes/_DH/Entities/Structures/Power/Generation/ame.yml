@@ -1,0 +1,525 @@
+- type: entity
+  id: NukeAmeController
+  name: контроллер ядерного ДАМ
+  description: Это контроллер для ядерного двигателя антиматерии.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    snapCardinals: true
+    sprite: _DH/Structures/Power/Generation/ame.rsi
+    state: control
+    layers:
+    - state: control
+    - state: control_on
+      map: ["display"]
+      visible: false
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 190
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't spawn entities
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 180
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Anchorable
+  - type: Pullable
+  - type: AmeController
+    fuelSlot:
+      whitelist:
+        tags:
+        - NAMEFuel
+      whitelistFailPopup: ame-controller-component-fuel-slot-fail-whitelist
+      lockedFailPopup: name-controller-component-fuel-slot-fail-locked
+      insertSuccessPopup: ame-controller-component-fuel-slot-success-insert
+  - type: Explosive
+    explosionType: Default
+    intensitySlope: 6
+    maxIntensity: 80
+  - type: ActivatableUI
+    key: enum.AmeControllerUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.AmeControllerUiKey.Key:
+        type: AmeControllerBoundUserInterface
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.AmeControllerVisuals.DisplayState:
+        display:
+          Off: { visible: false }
+          On: { state: control_on, visible: true }
+          Warning: { state: control_warning, visible: true }
+          Critical: { state: control_critical, visible: true }
+          Fuck: { state: control_fuck, visible: true }
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      ame:
+        !type:AdjacentNode
+        nodeGroupID: AMEngine
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+  - type: PowerMonitoringDevice
+    group: Generator
+    loadNode: input
+    sprite: _DH/Structures/Power/Generation/ame.rsi
+    state: static
+  - type: PowerSupplier
+    supplyRate: 0
+  - type: ItemSlots
+  - type: ContainerContainer
+    containers:
+      fuelSlot: !type:ContainerSlot
+  - type: GuideHelp
+    guides:
+    - AME
+    - Power
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: input
+    mediumVoltageNode: ame
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: AmeController
+  id: NukeAmeControllerUnanchored
+  suffix: Unanchored
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+
+- type: entity
+  id: NukeAmeShielding
+  name: экранирование ядерного ДАМ
+  description: Впускает антиматерию и выпускает материю.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    drawdepth: Walls
+    sprite: _DH/Structures/Power/Generation/ame.rsi
+    state: shield_0
+    layers:
+    - state: shield_0
+    - state: core
+      map: ["core"]
+      visible: false
+    - state: core_weak
+      map: ["core_glow"]
+      shader: unshaded
+      visible: false
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 190
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't spawn entities
+        !type:DamageTrigger
+        damage: 280
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Transform
+    anchored: true
+  - type: IconSmooth
+    mode: CardinalFlags
+    base: shield_
+    key: ame_shield
+  - type: AmeShield
+  - type: NodeContainer
+    nodes:
+      ame:
+        !type:AdjacentNode
+        nodeGroupID: AMEngine
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 0.5
+    color: "#5fc9fd"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.AmeShieldVisuals.Core:
+        core:
+          True: { visible: true }
+          False: { visible: false }
+      enum.AmeShieldVisuals.CoreState:
+        core_glow:
+          Off: { visible: false }
+          Weak: { state: core_weak, visible: true }
+          Strong: { state: core_strong, visible: true }
+  - type: Construction
+    graph: AmeShielding
+    node: ameShielding
+  - type: GuideHelp
+    guides:
+    - AME
+    - Power
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: ame
+
+- type: entity
+  parent: BaseItem
+  id: NukeAmeJar
+  name: топливный бак ядерного ДАМ
+  description: Герметичный сосуд с антивеществом использующийся в ядерном реакторе антиматерии.
+  components:
+  - type: Item
+    size: Normal
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+  - type: Sprite
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+    state: jar
+  - type: AmeFuelContainer
+    fuelAmount: 1500
+    fuelCapacity: 1500
+  - type: StaticPrice
+    price: 600
+    vendPrice: 8000 # Frontier: FuelVend price
+  - type: GuideHelp
+    guides: [ AME, Power ]
+  - type: Tag # Frontier
+    tags: # Frontier
+    - Recyclable # Frontier
+    - NAMEFuel
+  - type: NFFuel # Frontier
+
+- type: entity
+  id: AmeShieldingHalloween
+  name: экранирование ДАМ
+  description: Впускает антиматерию и выпускает материю. Похоже, оно было модифицированно тёмной магией.... Или кто-то поменял подсветку в ядре?
+  categories: [ HideSpawnMenu ]
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    drawdepth: Walls
+    sprite: _DH/Structures/Power/Generation/halloween_ame.rsi
+    state: shield_0
+    layers:
+    - state: shield_0
+    - state: core
+      map: ["core"]
+      visible: false
+    - state: core_weak
+      map: ["core_glow"]
+      shader: unshaded
+      visible: false
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 190
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageContainer: StructuralInorganicUltraHeavy # _Lua
+    damageModifierSet: StructuralMetallicStrongUltra # _Lua
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't spawn entities
+        !type:DamageTrigger
+        damage: 5000 #200 _Lua
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000 #100 _Lua
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Transform
+    anchored: true
+  - type: IconSmooth
+    mode: CardinalFlags
+    base: shield_
+    key: ame_shield
+  - type: AmeShield
+  - type: NodeContainer
+    nodes:
+      ame:
+        !type:AdjacentNode
+        nodeGroupID: AMEngine
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 0.8
+    color: "#ce6510"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.AmeShieldVisuals.Core:
+        core:
+          True: { visible: true }
+          False: { visible: false }
+      enum.AmeShieldVisuals.CoreState:
+        core_glow:
+          Off: { visible: false }
+          Weak: { state: core_weak, visible: true }
+          Strong: { state: core_strong, visible: true }
+  - type: Construction
+    graph: AmeShielding
+    node: ameShielding
+  - type: GuideHelp
+    guides:
+    - AME
+    - Power
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: ame
+
+- type: entity
+  id: AmeControllerHalloween
+  name: контроллер ДАМ
+  description: Это контроллер для двигателя антиматерии.
+  categories: [HideSpawnMenu]
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    snapCardinals: true
+    sprite: _DH/Structures/Power/Generation/halloween_ame.rsi
+    state: control
+    layers:
+    - state: control
+    - state: control_on
+      map: ["display"]
+      visible: false
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 190
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+  - type: Damageable
+    damageContainer: StructuralInorganicUltraHeavy # _Lua
+    damageModifierSet: StructuralMetallicStrongUltra # _Lua
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't spawn entities
+        !type:DamageTrigger
+        damage: 5000 #200 _Lua
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000 #100 _Lua
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Anchorable
+  - type: Pullable
+  - type: AmeController
+    fuelSlot:
+      whitelist:
+        components:
+        - AmeFuelContainer
+      whitelistFailPopup: ame-controller-component-fuel-slot-fail-whitelist
+      lockedFailPopup: ame-controller-component-fuel-slot-fail-locked
+      insertSuccessPopup: ame-controller-component-fuel-slot-success-insert
+  - type: Explosive
+    explosionType: DefaultAME #_Lua Default<DefaultAME
+    intensitySlope: 5
+    maxIntensity: 60
+    totalIntensity: 400 # _Lua
+  - type: ActivatableUI
+    key: enum.AmeControllerUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.AmeControllerUiKey.Key:
+        type: AmeControllerBoundUserInterface
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.AmeControllerVisuals.DisplayState:
+        display:
+          Off: { visible: false }
+          On: { state: control_on, visible: true }
+          Warning: { state: control_warning, visible: true }
+          Critical: { state: control_critical, visible: true }
+          Fuck: { state: control_fuck, visible: true }
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      ame:
+        !type:AdjacentNode
+        nodeGroupID: AMEngine
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+  - type: PowerMonitoringDevice
+    group: Generator
+    loadNode: input
+    sprite: Structures/Power/Generation/ame.rsi
+    state: static
+  - type: PowerSupplier
+    supplyRate: 0
+  - type: ItemSlots
+  - type: ContainerContainer
+    containers:
+      fuelSlot: !type:ContainerSlot
+  - type: GuideHelp
+    guides:
+    - AME
+    - Power
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: input
+    mediumVoltageNode: ame
+  
+#region Expandet AME
+
+- type: entity
+  parent: BaseItem
+  id: ExpandetAmeJar
+  name: топливный ДАМ
+  description: Герметичный блюспейс-сосуд с антивеществом использующийся в ядерном реакторе антиматерии.
+  components:
+  - type: Item
+    size: Normal
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+  - type: Sprite
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+    state: jar_expandet
+  - type: AmeFuelContainer
+    fuelAmount: 2000
+    fuelCapacity: 2000
+  - type: StaticPrice
+    price: 400
+    vendPrice: 6000 # Frontier: FuelVend price
+  - type: GuideHelp
+    guides: [ AME, Power ]
+  - type: Tag # Frontier
+    tags: # Frontier
+    - Recyclable # Frontier
+    - NAMEFuel
+  - type: NFFuel # Frontier
+
+- type: entity
+  parent: BaseItem
+  id: BluespaceAmeJar
+  name: топливный блюспейс-бак ДАМ
+  description: Герметичный блюспейс-сосуд с антивеществом использующийся в реакторе антиматерии.
+  components:
+  - type: Item
+    size: Normal
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+  - type: Sprite
+    sprite: _DH/Structures/Power/Generation/ame_jar.rsi
+    state: jar_bluespace
+  - type: AmeFuelContainer
+    fuelAmount: 4700
+    fuelCapacity: 4700
+  - type: StaticPrice
+    price: 780
+    vendPrice: 9700 # Frontier: FuelVend price
+  - type: GuideHelp
+    guides: [ AME, Power ]
+  - type: Tag # Frontier
+    tags: # Frontier
+    - Recyclable # Frontier
+    - NAMEFuel
+  - type: NFFuel # Frontier

@@ -26,6 +26,9 @@
     capacity: 1
   - type: AltFireMelee
     attackType: Light
+  - type: UseDelayOnShoot
+  - type: UseDelay
+    delay: 5
 
 - type: entity
   id: NFWeaponRifleFoam

@@ -227,7 +227,7 @@
       path: "/Audio/Weapons/Guns/Hits/taser_hit.ogg"
     forceSound: true
   - type: TimedDespawn
-    lifetime: 0.170 # Very short range
+    lifetime: 0.180 # Very short range #DH 170<180
   - type: StunOnCollide
     stunAmount: 0
     knockdownAmount: 2.5 # Enough to subdue and follow up with a stun batong
@@ -255,7 +255,7 @@
     radius: 2.0
     energy: 7.01
   - type: TimedDespawn
-    lifetime: 1.0 # Not so short range
+    lifetime: 0.77 # Not so short range #DH 1.0<0.77
   - type: StunOnCollide
     stunAmount: 5
     knockdownAmount: 10

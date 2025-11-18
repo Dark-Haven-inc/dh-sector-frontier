@@ -23,11 +23,19 @@
     minAngle: -0 # Set to 0 because GunRequiresWield
     maxAngle: -0
   - type: Gun
+<<<<<<< HEAD
     projectileSpeed: 65 #Lua
     minAngle: 1.4
     maxAngle: 7
     angleIncrease: 5.6
     angleDecay: 3.7
+=======
+    projectileSpeed: 30
+    minAngle: 1.4
+    maxAngle: 8
+    angleIncrease: 5.6
+    angleDecay: 2
+>>>>>>> b34311cc0e (DH 18-11)
     fireRate: 1
     selectedMode: SemiAuto
     availableModes:
