@@ -2482,3 +2482,10 @@ Entries:
   id: 181
   time: '2025-11-23T13:55:58.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/370
+- author: LeptonComm
+  changes:
+    - type: Add
+      message: Респрайт скафандров СБ (от Romber)
+  id: 182
+  time: '2025-11-23T13:57:13.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/371
