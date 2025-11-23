@@ -2500,3 +2500,10 @@ Entries:
   id: 183
   time: '2025-11-23T14:38:34.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/372
+- author: LeptonComm
+  changes:
+    - type: Tweak
+      message: Капитальный ремап Магуса; Магусу добавлена наценка в 30к за химку
+  id: 184
+  time: '2025-11-23T14:42:02.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/376
