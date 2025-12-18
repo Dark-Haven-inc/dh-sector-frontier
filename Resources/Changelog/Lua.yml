@@ -2843,3 +2843,10 @@ Entries:
   id: 202
   time: '2025-12-15T17:27:41.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/404
+- author: fox76055
+  changes:
+    - type: Add
+      message: Добавлено отображение угловых тайлов на сканере масс.
+  id: 203
+  time: '2025-12-18T09:22:30.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/403
