@@ -33,8 +33,8 @@ namespace Content.Server.Database
         void Shutdown();
 
         #region DynamicMarket
-        Task<Dictionary<string, double>> GetAllDynamicMarketModPrices();
-        Task UpsertDynamicMarketEntries(IReadOnlyCollection<(string protoId, double basePrice, double modPrice)> updates);
+        Task<List<DynamicMarketEntry>> GetAllDynamicMarketEntries();
+        Task UpsertDynamicMarketEntries(IReadOnlyCollection<(string protoId, double basePrice, double modPrice, long soldDelta, long boughtDelta, DateTime lastUpdate)> updates);
         #endregion
 
         #region Preferences
@@ -478,11 +478,11 @@ namespace Content.Server.Database
         }
 
         #region DynamicMarket
-        public Task<Dictionary<string, double>> GetAllDynamicMarketModPrices()
+        public Task<List<DynamicMarketEntry>> GetAllDynamicMarketEntries()
         {
-            return RunDbCommand(() => _db.GetAllDynamicMarketModPrices());
+            return RunDbCommand(() => _db.GetAllDynamicMarketEntries());
         }
-        public Task UpsertDynamicMarketEntries(IReadOnlyCollection<(string protoId, double basePrice, double modPrice)> updates)
+        public Task UpsertDynamicMarketEntries(IReadOnlyCollection<(string protoId, double basePrice, double modPrice, long soldDelta, long boughtDelta, DateTime lastUpdate)> updates)
         {
             return RunDbCommand(() => _db.UpsertDynamicMarketEntries(updates));
         }

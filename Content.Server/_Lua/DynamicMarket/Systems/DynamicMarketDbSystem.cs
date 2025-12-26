@@ -13,9 +13,21 @@ public sealed class DynamicMarketDbSystem : EntitySystem
     private ISawmill _sawmill = default!;
     public const double DownDeltaPerUnit = 0.0020;
     public const double UpDeltaPerUnit = 0.0012;
+    private const double DriftNeutralTarget = 1.0;
+    private const double DriftHighTarget = 1.99;
+    private const double DriftToNeutralHours = 3.0;
+    private const double DriftToHighHours = 3.0;
     public const double MinModPrice = 0.01;
     public const double MaxModPrice = 1.99;
-    private readonly Dictionary<string, double> _modCache = new(capacity: 2048);
+    private sealed class CacheEntry
+    {
+        public double ModPrice = 1.0;
+        public double BasePrice = 0.0;
+        public long SoldUnits = 0;
+        public long BoughtUnits = 0;
+        public DateTime LastUpdate = DateTime.UnixEpoch;
+    }
+    private readonly Dictionary<string, CacheEntry> _cache = new(capacity: 2048);
     private bool _loaded;
 
     public override void Initialize()
@@ -27,22 +39,28 @@ public sealed class DynamicMarketDbSystem : EntitySystem
 
     public double GetCurrentMultiplier(string prototypeId)
     {
-        if (_modCache.TryGetValue(prototypeId, out var mod)) return mod;
-        return 1.0;
+        var now = DateTime.UtcNow;
+        var e = GetOrCreateEntry(prototypeId, now);
+        ApplyDrift(e, now);
+        return e.ModPrice;
     }
 
     public double GetProjectedMultiplierAfterSale(string prototypeId, int units)
     {
         if (units <= 0) return GetCurrentMultiplier(prototypeId);
-        var old = GetCurrentMultiplier(prototypeId);
-        return Math.Clamp(old - units * DownDeltaPerUnit, MinModPrice, MaxModPrice);
+        var now = DateTime.UtcNow;
+        var e = GetOrCreateEntry(prototypeId, now);
+        ApplyDrift(e, now);
+        return Math.Clamp(e.ModPrice - units * DownDeltaPerUnit, MinModPrice, MaxModPrice);
     }
 
     public double GetProjectedMultiplierAfterPurchase(string prototypeId, int units)
     {
         if (units <= 0) return GetCurrentMultiplier(prototypeId);
-        var old = GetCurrentMultiplier(prototypeId);
-        return Math.Clamp(old + units * UpDeltaPerUnit, MinModPrice, MaxModPrice);
+        var now = DateTime.UtcNow;
+        var e = GetOrCreateEntry(prototypeId, now);
+        ApplyDrift(e, now);
+        return Math.Clamp(e.ModPrice + units * UpDeltaPerUnit, MinModPrice, MaxModPrice);
     }
 
     public void ApplySale(IReadOnlyCollection<(string prototypeId, int units, double baseUnitPrice)> sold)
@@ -61,10 +79,21 @@ public sealed class DynamicMarketDbSystem : EntitySystem
     {
         try
         {
-            var data = await _db.GetAllDynamicMarketModPrices();
-            foreach (var (pid, mod) in data)  _modCache[pid] = Math.Clamp(mod, MinModPrice, MaxModPrice);
+            var rows = await _db.GetAllDynamicMarketEntries();
+            foreach (var row in rows)
+            {
+                var e = new CacheEntry
+                {
+                    ModPrice = Math.Clamp(row.ModPrice, MinModPrice, MaxModPrice),
+                    BasePrice = row.BasePrice,
+                    SoldUnits = row.SoldUnits,
+                    BoughtUnits = row.BoughtUnits,
+                    LastUpdate = row.LastUpdate.Kind == DateTimeKind.Utc ? row.LastUpdate : DateTime.SpecifyKind(row.LastUpdate, DateTimeKind.Utc)
+                };
+                _cache[row.ProtoId] = e;
+            }
             _loaded = true;
-            _sawmill.Info($"Loaded dynamic market cache: {_modCache.Count} entries.");
+            _sawmill.Info($"Loaded dynamic market cache: {_cache.Count} entries.");
         }
         catch (Exception e) { _sawmill.Error($"Failed to load DynamicMarket cache from DB. Falling back to neutral prices until updates occur. Exception: {e}"); }
     }
@@ -82,21 +111,68 @@ public sealed class DynamicMarketDbSystem : EntitySystem
             byProto[pid] = cur;
         }
         if (byProto.Count == 0) return;
-        var updates = new List<(string protoId, double basePrice, double modPrice)>(byProto.Count);
+        var now = DateTime.UtcNow;
+        var updates = new List<(string protoId, double basePrice, double modPrice, long soldDelta, long boughtDelta, DateTime lastUpdate)>(byProto.Count);
         foreach (var (pid, agg) in byProto)
         {
-            var oldMod = GetCurrentMultiplier(pid);
+            var entry = GetOrCreateEntry(pid, now);
+            ApplyDrift(entry, now);
             var delta = agg.units * (isSale ? DownDeltaPerUnit : UpDeltaPerUnit);
-            var newMod = isSale ? Math.Clamp(oldMod - delta, MinModPrice, MaxModPrice) : Math.Clamp(oldMod + delta, MinModPrice, MaxModPrice);
+            var newMod = isSale ? Math.Clamp(entry.ModPrice - delta, MinModPrice, MaxModPrice) : Math.Clamp(entry.ModPrice + delta, MinModPrice, MaxModPrice);
             var avgBase = agg.units > 0 ? (agg.weightedBaseSum / agg.units) : 0.0;
             if (avgBase < 0) avgBase = 0;
-            _modCache[pid] = newMod;
-            updates.Add((pid, avgBase, newMod));
+            entry.ModPrice = newMod;
+            entry.BasePrice = avgBase;
+            entry.LastUpdate = now;
+            long soldDelta = isSale ? agg.units : 0;
+            long boughtDelta = isSale ? 0 : agg.units;
+            entry.SoldUnits += soldDelta;
+            entry.BoughtUnits += boughtDelta;
+            updates.Add((pid, avgBase, newMod, soldDelta, boughtDelta, now));
         }
         try
         { await _db.UpsertDynamicMarketEntries(updates); }
         catch (Exception e)
         { _sawmill.Error($"Failed to upsert DynamicMarket entries ({updates.Count}). Exception: {e}"); }
+    }
+
+    private CacheEntry GetOrCreateEntry(string prototypeId, DateTime now)
+    {
+        if (_cache.TryGetValue(prototypeId, out var entry)) return entry;
+        entry = new CacheEntry
+        {
+            ModPrice = 1.0,
+            BasePrice = 0.0,
+            SoldUnits = 0,
+            BoughtUnits = 0,
+            LastUpdate = now
+        };
+        _cache[prototypeId] = entry;
+        return entry;
+    }
+
+    // Видит святой C# я не специально да храни тебя от лагов и багов святой C# наш...
+    private static void ApplyDrift(CacheEntry entry, DateTime now)
+    {
+        if (entry.LastUpdate == DateTime.UnixEpoch)
+        {
+            entry.LastUpdate = now;
+            return;
+        }
+        var elapsed = now - entry.LastUpdate;
+        if (elapsed <= TimeSpan.Zero) return;
+        var hours = elapsed.TotalHours;
+        if (entry.ModPrice < DriftNeutralTarget)
+        {
+            var rateToNeutralPerHour = (DriftNeutralTarget - MinModPrice) / DriftToNeutralHours;
+            entry.ModPrice = Math.Min(DriftNeutralTarget, Math.Clamp(entry.ModPrice + hours * rateToNeutralPerHour, MinModPrice, MaxModPrice));
+        }
+        if (entry.ModPrice >= DriftNeutralTarget && entry.ModPrice < DriftHighTarget)
+        {
+            var rateToHighPerHour = (DriftHighTarget - DriftNeutralTarget) / DriftToHighHours;
+            entry.ModPrice = Math.Min(DriftHighTarget, Math.Clamp(entry.ModPrice + hours * rateToHighPerHour, MinModPrice, MaxModPrice));
+        }
+        entry.LastUpdate = now;
     }
 }
 
