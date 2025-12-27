@@ -423,6 +423,24 @@ namespace Content.Server.Database
                 ");
             }
         }
+
+        public async Task ApplyDynamicMarketDrift(DateTime now, double ratePerHour, double maxModPrice, double minModPrice)
+        {
+            await using var db = await GetDb();
+            await db.DbContext.Database.ExecuteSqlInterpolatedAsync($@"
+            UPDATE dynamic_market
+            SET
+              modprice = LEAST(
+                {maxModPrice},
+                GREATEST(
+                  {minModPrice},
+                  modprice + ({ratePerHour} * (EXTRACT(EPOCH FROM ({now} - last_update)) / 3600.0))
+                )
+              ),
+              last_update = {now}
+            WHERE modprice < {maxModPrice};
+            ");
+        }
         #endregion
 
         #region User Ids

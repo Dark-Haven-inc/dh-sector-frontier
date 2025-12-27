@@ -13,10 +13,9 @@ public sealed class DynamicMarketDbSystem : EntitySystem
     private ISawmill _sawmill = default!;
     public const double DownDeltaPerUnit = 0.0020;
     public const double UpDeltaPerUnit = 0.0012;
-    private const double DriftNeutralTarget = 1.0;
     private const double DriftHighTarget = 1.99;
-    private const double DriftToNeutralHours = 3.0;
-    private const double DriftToHighHours = 3.0;
+    private const double DriftHoursToHigh = 24.0;
+    private const double DriftRatePerHour = (DriftHighTarget - 1.0) / DriftHoursToHigh;
     public const double MinModPrice = 0.01;
     public const double MaxModPrice = 1.99;
     private sealed class CacheEntry
@@ -29,38 +28,48 @@ public sealed class DynamicMarketDbSystem : EntitySystem
     }
     private readonly Dictionary<string, CacheEntry> _cache = new(capacity: 2048);
     private bool _loaded;
+    private static readonly TimeSpan DriftPersistInterval = TimeSpan.FromMinutes(10);
+    private DateTime _nextDriftPersistUtc = DateTime.UnixEpoch;
 
     public override void Initialize()
     {
         base.Initialize();
         _sawmill = _log.GetSawmill("dynamic-market");
         _ = LoadCache();
+        _nextDriftPersistUtc = DateTime.UtcNow + DriftPersistInterval;
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        if (!_loaded) return;
+        var now = DateTime.UtcNow;
+        if (now < _nextDriftPersistUtc) return;
+        _nextDriftPersistUtc = now + DriftPersistInterval;
+        _ = PersistDriftTick(now);
     }
 
     public double GetCurrentMultiplier(string prototypeId)
     {
         var now = DateTime.UtcNow;
-        var e = GetOrCreateEntry(prototypeId, now);
-        ApplyDrift(e, now);
-        return e.ModPrice;
+        var entry = GetOrCreateEntry(prototypeId, now);
+        return entry.ModPrice;
     }
 
     public double GetProjectedMultiplierAfterSale(string prototypeId, int units)
     {
         if (units <= 0) return GetCurrentMultiplier(prototypeId);
         var now = DateTime.UtcNow;
-        var e = GetOrCreateEntry(prototypeId, now);
-        ApplyDrift(e, now);
-        return Math.Clamp(e.ModPrice - units * DownDeltaPerUnit, MinModPrice, MaxModPrice);
+        var entry = GetOrCreateEntry(prototypeId, now);
+        return Math.Clamp(entry.ModPrice - units * DownDeltaPerUnit, MinModPrice, MaxModPrice);
     }
 
     public double GetProjectedMultiplierAfterPurchase(string prototypeId, int units)
     {
         if (units <= 0) return GetCurrentMultiplier(prototypeId);
         var now = DateTime.UtcNow;
-        var e = GetOrCreateEntry(prototypeId, now);
-        ApplyDrift(e, now);
-        return Math.Clamp(e.ModPrice + units * UpDeltaPerUnit, MinModPrice, MaxModPrice);
+        var entry = GetOrCreateEntry(prototypeId, now);
+        return Math.Clamp(entry.ModPrice + units * UpDeltaPerUnit, MinModPrice, MaxModPrice);
     }
 
     public void ApplySale(IReadOnlyCollection<(string prototypeId, int units, double baseUnitPrice)> sold)
@@ -162,17 +171,19 @@ public sealed class DynamicMarketDbSystem : EntitySystem
         var elapsed = now - entry.LastUpdate;
         if (elapsed <= TimeSpan.Zero) return;
         var hours = elapsed.TotalHours;
-        if (entry.ModPrice < DriftNeutralTarget)
-        {
-            var rateToNeutralPerHour = (DriftNeutralTarget - MinModPrice) / DriftToNeutralHours;
-            entry.ModPrice = Math.Min(DriftNeutralTarget, Math.Clamp(entry.ModPrice + hours * rateToNeutralPerHour, MinModPrice, MaxModPrice));
-        }
-        if (entry.ModPrice >= DriftNeutralTarget && entry.ModPrice < DriftHighTarget)
-        {
-            var rateToHighPerHour = (DriftHighTarget - DriftNeutralTarget) / DriftToHighHours;
-            entry.ModPrice = Math.Min(DriftHighTarget, Math.Clamp(entry.ModPrice + hours * rateToHighPerHour, MinModPrice, MaxModPrice));
-        }
+        if (hours <= 0) return;
+        if (entry.ModPrice < DriftHighTarget) entry.ModPrice = Math.Min(DriftHighTarget, Math.Clamp(entry.ModPrice + hours * DriftRatePerHour, MinModPrice, MaxModPrice));
         entry.LastUpdate = now;
+    }
+
+    private async Task PersistDriftTick(DateTime now)
+    {
+        try
+        {
+            foreach (var kv in _cache) ApplyDrift(kv.Value, now);
+            await _db.ApplyDynamicMarketDrift(now, DriftRatePerHour, DriftHighTarget, MinModPrice);
+        }
+        catch (Exception e) { _sawmill.Error($"Failed to persist dynamic market drift tick. Exception: {e}"); }
     }
 }
 
