@@ -3082,3 +3082,10 @@ Entries:
   id: 217
   time: '2026-01-02T12:26:20.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/425
+- author: fox76055
+  changes:
+    - type: Tweak
+      message: Респрайт тайлов и декалей.
+  id: 218
+  time: '2026-01-02T12:37:45.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/422
