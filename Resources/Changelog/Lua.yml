@@ -3100,3 +3100,26 @@ Entries:
   id: 219
   time: '2026-01-02T16:10:31.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/427
+- author: HacksLua
+  changes:
+    - type: Add
+      message: >-
+        В аплинке теперь показывается количество доступных предметов рядом с
+        названием
+    - type: Fix
+      message: >-
+        Исправлена проблема с изменением цвета шаттлов на радаре при выключенном
+        IFF
+    - type: Add
+      message: Добавлена специальная иконка для шаттлов-обломков
+    - type: Tweak
+      message: При переименовании корабля его номер теперь сохраняется
+    - type: Tweak
+      message: >-
+        Корабль Spear теперь срывает систему маскировки IFF у других кораблей в
+        радиусе 1000 метров
+    - type: Tweak
+      message: Улучшена система динамических цен
+  id: 220
+  time: '2026-01-03T16:18:18.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/428
