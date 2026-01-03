@@ -3123,3 +3123,10 @@ Entries:
   id: 220
   time: '2026-01-03T16:18:18.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/428
+- author: KiraFaust
+  changes:
+    - type: Tweak
+      message: Изменён обычный спрайт подстанции.
+  id: 221
+  time: '2026-01-03T16:18:32.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/429
