@@ -3130,3 +3130,16 @@ Entries:
   id: 221
   time: '2026-01-03T16:18:32.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/429
+- author: fox76055
+  changes:
+    - type: Tweak
+      message: Всё оружие _NF перенесено на новый калибр.
+    - type: Tweak
+      message: Старые патроны (_NF) заменены ВЕЗДЕ на новые (_Mono).
+    - type: Fix
+      message: переводы также были адаптированы под новый калибр.
+    - type: Tweak
+      message: Аплинк ДСБФ был переработан
+  id: 222
+  time: '2026-01-03T17:58:34.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/414
