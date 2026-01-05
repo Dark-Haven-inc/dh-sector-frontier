@@ -3150,3 +3150,12 @@ Entries:
   id: 223
   time: '2026-01-05T08:47:56.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/430
+- author: fox76055
+  changes:
+    - type: Tweak
+      message: Теперь 45 ACP слабее чем 45 Magnum
+    - type: Fix
+      message: Теперь дробовики принимают новый калибр патронов (4 gauge)
+  id: 224
+  time: '2026-01-05T08:50:23.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/432
