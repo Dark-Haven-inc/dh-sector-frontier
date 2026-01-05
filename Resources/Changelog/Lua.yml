@@ -3196,3 +3196,13 @@ Entries:
   id: 225
   time: '2026-01-05T12:35:41.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/434
+- author: fox76055
+  changes:
+    - type: Fix
+      message: >-
+        Скафандры ПЦК, СИ, Инженера, Атмос-техника, Утилизатора, Шахтёры,
+        Элитного шахтёра, Парамедика, НР-а, Капитана, Клоуна теперь адаптированы
+        под расу гарпий.
+  id: 226
+  time: '2026-01-05T12:39:39.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/435
