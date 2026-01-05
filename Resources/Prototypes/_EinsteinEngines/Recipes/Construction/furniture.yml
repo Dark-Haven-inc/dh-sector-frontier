@@ -1,0 +1,15 @@
+#bathroom
+- type: construction
+  name: recipe-construction-shower-name
+  id: Shower
+  graph: Shower
+  startNode: start
+  targetNode: shower
+  category: construction-category-furniture
+  description: recipe-construction-shower-desc
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: true
+  canBuildInImpassable: false
+  conditions:
+    - !type:TileNotBlocked
