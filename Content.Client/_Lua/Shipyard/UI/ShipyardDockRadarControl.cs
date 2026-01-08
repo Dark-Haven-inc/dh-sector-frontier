@@ -26,6 +26,7 @@ public sealed class ShipyardDockRadarControl : ShuttleNavControl
     protected override Color RadarRadialLineColor => ShipyardWallColorSrgb;
     protected override bool AllowResize => true;
     protected override bool ScaleWithControlSize => true;
+    protected override bool ShowRadarPositionMarker => false;
     private EntityCoordinates? _baseCoords;
     private Angle? _baseAngle;
     private Vector2 _pan;

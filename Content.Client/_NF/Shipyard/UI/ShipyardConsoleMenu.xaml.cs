@@ -96,17 +96,23 @@ public sealed partial class ShipyardConsoleMenu : FancyWindow
                 }
             }
         }
-        const float maxPickDistance = 2.0f;
+        const float maxPickDistance = 4.0f; // Lua
         if (best == null || bestDistSq > maxPickDistance * maxPickDistance)
         {
+            _selectedDockPort = null;
+            DockRadar.HighlightDockPort = null;
             OnDockPortSelected?.Invoke(null);
             return;
         }
         if (_selectedDockPort.HasValue && best == _selectedDockPort.Value)
         {
+            _selectedDockPort = null;
+            DockRadar.HighlightDockPort = null;
             OnDockPortSelected?.Invoke(null);
             return;
         }
+        _selectedDockPort = best;
+        DockRadar.HighlightDockPort = best;
         OnDockPortSelected?.Invoke(best);
     }
 

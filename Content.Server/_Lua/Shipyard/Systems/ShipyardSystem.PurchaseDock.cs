@@ -28,23 +28,17 @@ public sealed partial class ShipyardSystem
             var selectedDockEntity = GetEntity(console.SelectedDockPort.Value);
             if (TryComp<DockingComponent>(selectedDockEntity, out var dockComp))
             {
+                if (dockComp.Docked) return TryPurchaseShuttle(stationUid, shuttlePath, out shuttleEntityUid);
                 var dockXform = Transform(selectedDockEntity);
                 var targetGridUid = dockXform.GridUid;
                 if (targetGridUid != null)
                 {
-                    if (TryAddShuttle(shuttlePath, out var shuttleGrid) &&
-                        TryComp<ShuttleComponent>(shuttleGrid.Value, out var shuttleComponent))
+                    if (TryAddShuttle(shuttlePath, out var shuttleGrid) && TryComp<ShuttleComponent>(shuttleGrid.Value, out var shuttleComponent))
                     {
-                        DockingConfig? config = null;
-                        var shuttleDocks = _docking.GetDocks(shuttleGrid.Value);
-                        foreach (var shuttleDock in shuttleDocks)
-                        {
-                            config = _docking.GetDockingConfig(shuttleGrid.Value, targetGridUid.Value, shuttleDock.Owner, shuttleDock.Comp, selectedDockEntity, dockComp);
-                            if (config != null) break;
-                        }
+                        var config = _docking.GetDockingConfigForGridDock( shuttleGrid.Value, targetGridUid.Value, selectedDockEntity, priorityTag: null, dockType: dockComp.DockType);
                         if (config != null)
                         {
-                            _shuttle.FTLToCoordinates(shuttleGrid.Value, shuttleComponent, config.Coordinates, config.Angle);
+                            _shuttle.FTLDock((shuttleGrid.Value, Transform(shuttleGrid.Value)), config);
                             shuttleEntityUid = shuttleGrid.Value;
                             return true;
                         }
