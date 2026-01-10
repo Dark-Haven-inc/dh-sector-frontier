@@ -3318,3 +3318,20 @@ Entries:
   id: 231
   time: '2026-01-10T17:34:20.0000000+00:00'
   url: https://github.com/Lua-Frontier/sector-frontier-14/pull/443
+- author: HacksLua
+  changes:
+    - type: Add
+      message: Добавлено окно фракций с просмотром участников.
+    - type: Add
+      message: >-
+        Теперь капитан может набирать команду на судно, иконки команды видят
+        только члены команды.
+    - type: Tweak
+      message: Проклято, но теперь на ховере может сидеть 2 человека
+    - type: Fix
+      message: Исправлен баг из-за которого не переименовывался корабль
+    - type: Tweak
+      message: 'Статус иконки перемещены над хотбаром '
+  id: 232
+  time: '2026-01-10T18:36:14.0000000+00:00'
+  url: https://github.com/Lua-Frontier/sector-frontier-14/pull/445
