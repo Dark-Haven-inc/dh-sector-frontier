@@ -43,6 +43,7 @@ using Content.Shared.Lua.CLVar;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Preferences;
 using Content.Shared.Radio;
+using Content.Shared._Lua.Shipyard.BUIStates;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.StationRecords;
 using Content.Shared.Tag;
@@ -1112,14 +1113,14 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         var newName = args.NewName.Trim();
         if (string.IsNullOrEmpty(newName))
         {
-            ConsolePopup(player, "Ship name cannot be empty.");
+            ConsolePopup(player, Loc.GetString("shipyard-console-rename-empty"));
             PlayDenySound(player, uid, component);
             return;
         }
 
         if (newName.Length > ShuttleDeedComponent.MaxNameLength)
         {
-            ConsolePopup(player, $"Ship name cannot exceed {ShuttleDeedComponent.MaxNameLength} characters.");
+            ConsolePopup(player, Loc.GetString("shipyard-console-rename-too-long", ("max", ShuttleDeedComponent.MaxNameLength)));
             PlayDenySound(player, uid, component);
             return;
         }
@@ -1129,9 +1130,11 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
 
         // Preserve the original sell value from the current UI state
         int originalSellValue = 0;
-        if (_ui.TryGetUiState<ShipyardConsoleInterfaceState>(uid, (ShipyardConsoleUiKey)args.UiKey, out var currentState))
+        if (_ui.TryGetUiState<BoundUserInterfaceState>(uid, (ShipyardConsoleUiKey) args.UiKey, out var anyState))
         {
-            originalSellValue = currentState.ShipSellValue;
+            var baseState = anyState switch
+            { ShipyardConsoleLuaDockSelectState lua => lua.BaseState, ShipyardConsoleInterfaceState plain => plain, _ => null };
+            if (baseState != null) originalSellValue = baseState.ShipSellValue;
         }
 
         string? preservedSuffix = deed.ShuttleNameSuffix;
@@ -1160,7 +1163,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
 
         if (TryRenameShuttle(targetId, deed, newName, preservedSuffix))
         {
-            ConsolePopup(player, $"Ship renamed to '{GetFullName(deed)}'");
+            ConsolePopup(player, Loc.GetString("shipyard-console-rename-success", ("name", GetFullName(deed))));
             PlayConfirmSound(player, uid, component);
 
             // Get the player's balance or use 0 if they don't have a bank account
@@ -1177,7 +1180,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         }
         else
         {
-            ConsolePopup(player, "Failed to rename ship.");
+            ConsolePopup(player, Loc.GetString("shipyard-console-rename-failed"));
             PlayDenySound(player, uid, component);
         }
     }

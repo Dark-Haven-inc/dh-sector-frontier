@@ -12,7 +12,11 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
 {
     public sealed class AlertControl : BaseButton
     {
+        public const float AlertIconScale = 1.0f;
+        public static readonly Vector2 AlertIconMaxSize = new(48, 48);
+
         [Dependency] private readonly IEntityManager _entityManager = default!;
+        [Dependency] private readonly IGameTiming _timing = default!;
 
         private readonly SpriteSystem _sprite;
 
@@ -42,6 +46,7 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
         private readonly CooldownGraphic _cooldownGraphic;
 
         private EntityUid _spriteViewEntity;
+        private bool _iconSetupPending;
 
         /// <summary>
         /// Creates an alert control reflecting the indicated alert + state
@@ -62,8 +67,8 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
             _severity = severity;
             _icon = new SpriteView
             {
-                Scale = new Vector2(2, 2),
-                MaxSize = new Vector2(64, 64),
+                Scale = new Vector2(AlertIconScale, AlertIconScale),
+                MaxSize = AlertIconMaxSize,
                 Stretch = SpriteView.StretchMode.None,
                 HorizontalAlignment = HAlignment.Left
             };
@@ -72,9 +77,7 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
 
             Children.Add(_icon);
             _cooldownGraphic = new CooldownGraphic
-            {
-                MaxSize = new Vector2(64, 64)
-            };
+            { MaxSize = AlertIconMaxSize };
             Children.Add(_cooldownGraphic);
         }
 
@@ -104,6 +107,13 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
         protected override void FrameUpdate(FrameEventArgs args)
         {
             base.FrameUpdate(args);
+
+            if (_iconSetupPending && !_timing.ApplyingState) //costyl
+            {
+                _iconSetupPending = false;
+                SetupIconImmediate();
+            }
+
             UserInterfaceManager.GetUIController<AlertsUIController>().UpdateAlertSpriteEntity(_spriteViewEntity, Alert);
 
             if (!Cooldown.HasValue)
@@ -116,10 +126,20 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
             _cooldownGraphic.FromTime(Cooldown.Value.Start, Cooldown.Value.End);
         }
 
-        private void SetupIcon()
+        private void SetupIcon() //costyl
         {
-            if (!_entityManager.Deleted(_spriteViewEntity))
-                _entityManager.QueueDeleteEntity(_spriteViewEntity);
+            if (_timing.ApplyingState)
+            {
+                _iconSetupPending = true;
+                return;
+            }
+            _iconSetupPending = false;
+            SetupIconImmediate();
+        }
+
+        private void SetupIconImmediate()
+        {
+            if (!_entityManager.Deleted(_spriteViewEntity)) _entityManager.QueueDeleteEntity(_spriteViewEntity);
 
             _spriteViewEntity = _entityManager.Spawn(Alert.AlertViewEntity);
             if (_entityManager.TryGetComponent<SpriteComponent>(_spriteViewEntity, out var sprite))
