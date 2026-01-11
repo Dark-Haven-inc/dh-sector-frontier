@@ -23,6 +23,9 @@ public sealed partial class AlertsUI : UIWidget
         RobustXamlLoader.Load(this);
     }
 
+    public void SetIconScale(float scale)
+    { foreach (var control in _alertControls.Values) { control.SetIconScale(scale); } }
+
     public void SyncControls(AlertsSystem alertsSystem,
         AlertOrderPrototype? alertOrderPrototype,
         IReadOnlyDictionary<AlertKey,

@@ -2,9 +2,11 @@ using System.Numerics;
 using Content.Client.Actions.UI;
 using Content.Client.Cooldown;
 using Content.Shared.Alert;
+using Content.Shared.Lua.CLVar;
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -12,11 +14,11 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
 {
     public sealed class AlertControl : BaseButton
     {
-        public const float AlertIconScale = 1.0f;
-        public static readonly Vector2 AlertIconMaxSize = new(48, 48);
+        private static readonly Vector2 BaseAlertIconMaxSize = new(48, 48);
 
         [Dependency] private readonly IEntityManager _entityManager = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
+        [Dependency] private readonly IConfigurationManager _cfg = default!;
 
         private readonly SpriteSystem _sprite;
 
@@ -67,18 +69,26 @@ namespace Content.Client.UserInterface.Systems.Alerts.Controls
             _severity = severity;
             _icon = new SpriteView
             {
-                Scale = new Vector2(AlertIconScale, AlertIconScale),
-                MaxSize = AlertIconMaxSize,
                 Stretch = SpriteView.StretchMode.None,
                 HorizontalAlignment = HAlignment.Left
             };
 
+            _cooldownGraphic = new CooldownGraphic();
+            SetIconScale(_cfg.GetCVar(CLVars.AlertsIconScale));
+
             SetupIcon();
 
             Children.Add(_icon);
-            _cooldownGraphic = new CooldownGraphic
-            { MaxSize = AlertIconMaxSize };
             Children.Add(_cooldownGraphic);
+        }
+
+        public void SetIconScale(float scale)
+        {
+            scale = Math.Clamp(scale, 0.1f, 10f);
+            _icon.Scale = new Vector2(scale, scale);
+            var maxSize = BaseAlertIconMaxSize * scale;
+            _icon.MaxSize = maxSize;
+            _cooldownGraphic.MaxSize = maxSize;
         }
 
         private Control SupplyTooltip(Control? sender)

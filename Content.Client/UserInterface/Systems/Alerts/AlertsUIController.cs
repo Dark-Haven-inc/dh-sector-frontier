@@ -3,10 +3,12 @@ using Content.Client.Gameplay;
 using Content.Client.UserInterface.Systems.Alerts.Widgets;
 using Content.Client.UserInterface.Systems.Gameplay;
 using Content.Shared.Alert;
+using Content.Shared.Lua.CLVar;
 using Robust.Client.GameObjects;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
+using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 
 namespace Content.Client.UserInterface.Systems.Alerts;
@@ -14,6 +16,7 @@ namespace Content.Client.UserInterface.Systems.Alerts;
 public sealed class AlertsUIController : UIController, IOnStateEntered<GameplayState>, IOnSystemChanged<ClientAlertsSystem>
 {
     [Dependency] private readonly IPlayerManager _player = default!;
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
 
     [UISystemDependency] private readonly ClientAlertsSystem? _alertsSystem = default;
 
@@ -26,7 +29,12 @@ public sealed class AlertsUIController : UIController, IOnStateEntered<GameplayS
         var gameplayStateLoad = UIManager.GetUIController<GameplayStateLoadController>();
         gameplayStateLoad.OnScreenLoad += OnScreenLoad;
         gameplayStateLoad.OnScreenUnload += OnScreenUnload;
+
+        _cfg.OnValueChanged(CLVars.AlertsIconScale, OnAlertsIconScaleChanged, invokeImmediately: true);
     }
+
+    private void OnAlertsIconScaleChanged(float value)
+    { UI?.SetIconScale(value); }
 
     private void OnScreenUnload()
     {
@@ -39,7 +47,10 @@ public sealed class AlertsUIController : UIController, IOnStateEntered<GameplayS
     {
         var widget = UI;
         if (widget != null)
+        {
             widget.AlertPressed += OnAlertPressed;
+            widget.SetIconScale(_cfg.GetCVar(CLVars.AlertsIconScale));
+        }
 
         SyncAlerts();
     }
