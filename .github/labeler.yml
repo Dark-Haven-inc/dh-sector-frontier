@@ -2,52 +2,52 @@
 # - changed-files:
 #   - any-glob-to-any-file: "Resources/Maps/**/*.yml" # All .yml files in the Resources/Maps directory, recursive.
 
-"Map-Admin":
+"🛠️ Map-Admin":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_NF/Admin/**/*.yml" # Grid Files
 
-"Карта-Админ":
+"🗺️ Карта-Админ":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_Mono/Admin/**/*.yml"
   - any-glob-to-any-file: "Resources/Maps/_Lua/Admin/**/*.yml"
 
-"Map-Bluespace":
+"🔹 Map-Bluespace":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_NF/Bluespace/**/*.yml" # Grid Files
 
-"Карта-Блюспейс":
+"🌀 Карта-Блюспейс":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_Mono/Bluespace/**/*.yml"
   - any-glob-to-any-file: "Resources/Maps/_Lua/Bluespace/**/*.yml"
 
-"Map-Dungeon":
+"🏰 Map-Dungeon":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_NF/Dungeon/**/*.yml" # Grid Files
 
-"Карта-Данж":
+"⚔️ Карта-Данж":
 - changed-files:
   - any-glob-to-any-file: "Resources/Maps/_Mono/Dungeon/**/*.yml"
   - any-glob-to-any-file: "Resources/Maps/_Lua/Dungeon/**/*.yml"
 
-"Map-Outpost":
+"🏢 Map-Outpost":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_NF/Outpost/*.yml" # Map Files
     - "Resources/Prototypes/_NF/Maps/Outpost/*.yml" # Prototypes Files
 
-"Карта-Аванпост":
+"🚧 Карта-Аванпост":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_Mono/Outpost/*.yml"
     - "Resources/Maps/_Lua/Outpost/*.yml"
 
-"Map-Shuttle":
+"🚀 Map-Shuttle":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_NF/Shuttles/**/*.yml" # Grid Files
     - "Resources/Prototypes/_NF/Shipyard/**/*.yml" # Prototypes Files
 
-"Карта-Шаттлы":
+"🛸 Карта-Шаттлы":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_Mono/Shuttles/**/*.yml"
@@ -55,59 +55,59 @@
     - "Resources/Prototypes/_Mono/Shipyard/**/*.yml"
     - "Resources/Prototypes/_Lua/Shipyard/**/*.yml"
 
-"Map-POI":
+"📍 Map-POI":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_NF/POI/**/*.yml" # Grid Files
     - "Resources/Prototypes/_NF/Maps/POI/**/*.yml" # Prototypes Files
 
-"Карта-POI":
+"🗿 Карта-POI":
 - changed-files:
   - any-glob-to-any-file:
     - "Resources/Maps/_Mono/POI/**/*.yml"
     - "Resources/Maps/_Lua/POI/**/*.yml"
 
-"Sprites":
+"🎨 Sprites":
 - changed-files:
   - any-glob-to-any-file:
     - "**/*.rsi/*.png"
     - "**/*.rsi/*.json"
 
-"UI":
+"🖥️ UI":
 - changed-files:
   - any-glob-to-any-file: "**/*.xaml*"
 
-"C#":
+"💻 C#":
 - changed-files:
   - any-glob-to-any-file: "**/*.cs"
 
-"Shaders":
+"🖌️ Shaders":
 - changed-files:
   - any-glob-to-any-file: '**/*.swsl'
 
-"Audio":
+"🎵 Audio":
 - changed-files:
   - any-glob-to-any-file: '**/*.ogg'
 
-"No C#":
+"🚫 No C#":
 - changed-files:
   - all-globs-to-all-files: "!**/*.cs"
 
-"Docs":
+"📚 Docs":
 - changed-files:
   - any-glob-to-any-file:
     - "**/*.xml"
     - "**/*.md"
 
-"FTL":
+"🌌 FTL":
 - changed-files:
   - any-glob-to-any-file: "Resources/Locale/**/*.ftl"
 
-"YML":
+"📝 YML":
 - all:
   - changed-files:
     - any-glob-to-any-file: "**/*.yml"
-    - all-globs-to-any-file:
+    - all-globs-to-all-files:
       - "!Resources/Maps/_Mono/**/*.yml"
       - "!Resources/Maps/_Lua/**/*.yml"
       - "!Resources/Prototypes/_Mono/Maps/**/*.yml"
@@ -115,6 +115,6 @@
       - "!Resources/Maps/_NF/**/*.yml"
       - "!Resources/Prototypes/_NF/Maps/**/*.yml"
 
-"DB Migration":
+"🗄️ DB Migration":
 - changed-files:
   - any-glob-to-any-file: "Content.Server.Database/Migrations/**/*.cs"
