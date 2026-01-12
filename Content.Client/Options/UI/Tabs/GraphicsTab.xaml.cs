@@ -43,6 +43,14 @@ public sealed partial class GraphicsTab : Control
         Control.AddOptionPercentSlider(CLVars.AlertsIconScale, AlertsIconScaleSlider, min: 1f, max: 3f);
 
         Control.AddOptionDropDown(
+            CLVars.AlertsPosition,
+            DropDownAlertsPosition,
+            [
+                new OptionDropDownCVar<string>.ValueOption("right", Loc.GetString("ui-options-alerts-position-right")),
+                new OptionDropDownCVar<string>.ValueOption("bottom", Loc.GetString("ui-options-alerts-position-bottom")),
+            ]);
+
+        Control.AddOptionDropDown(
             CCVars.ViewportScalingFilterMode,
             DropDownFilterMode,
             [

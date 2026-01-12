@@ -21,6 +21,11 @@ public sealed partial class DefaultGameScreen : InGameScreen
         SetAnchorAndMarginPreset(Inventory, LayoutPreset.BottomLeft, margin: 5);
         SetAnchorAndMarginPreset(Hotbar, LayoutPreset.BottomWide, margin: 5);
         SetAnchorAndMarginPreset(Chat, LayoutPreset.TopRight, margin: 10);
+        SetAnchorPreset(AlertsContainer, LayoutPreset.Wide);
+        SetMarginLeft(AlertsContainer, 0); // Lua
+        SetMarginTop(AlertsContainer, 0); // Lua
+        SetMarginRight(AlertsContainer, 0); // Lua
+        SetMarginBottom(AlertsContainer, 0); // Lua
 
         Chat.OnResized += ChatOnResized;
         Chat.OnChatResizeFinish += ChatOnResizeFinish;
@@ -43,7 +48,10 @@ public sealed partial class DefaultGameScreen : InGameScreen
     }
 
     private void ChatOnResized()
-    { }
+    {
+        var marginBottom = Chat.GetValue<float>(MarginBottomProperty); // Lua
+        SetMarginTop(AlertsContainer, marginBottom); // Lua
+    }
 
     public override ChatBox ChatBox => Chat;
 
@@ -52,5 +60,6 @@ public sealed partial class DefaultGameScreen : InGameScreen
     {
         SetMarginBottom(Chat, size.X);
         SetMarginLeft(Chat, size.Y);
+        SetMarginTop(AlertsContainer, size.X); // Lua
     }
 }

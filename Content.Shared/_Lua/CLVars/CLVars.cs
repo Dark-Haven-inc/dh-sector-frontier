@@ -11,6 +11,8 @@ namespace Content.Shared.Lua.CLVar
     {
         public static readonly CVarDef<float> AlertsIconScale =
             CVarDef.Create("ui.alerts_icon_scale", 2.0f, CVar.CLIENTONLY | CVar.ARCHIVE);
+        public static readonly CVarDef<string> AlertsPosition =
+            CVarDef.Create("ui.alerts_position", "right", CVar.CLIENTONLY | CVar.ARCHIVE);
 
         public static readonly CVarDef<bool> BankFlushCacheEnabled = CVarDef.Create("bank.flushcache.enabled", false, CVar.SERVER | CVar.REPLICATED);
         public static readonly CVarDef<int> BankFlushCacheInterval = CVarDef.Create("bank.flushcache.interval", 300, CVar.SERVER | CVar.REPLICATED);
