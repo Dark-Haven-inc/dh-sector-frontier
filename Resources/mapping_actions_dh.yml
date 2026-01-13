@@ -1,0 +1,105 @@
+- tileId: Space
+  assignments:
+  - 0: 8
+- action: ActionMappingEraser
+  assignments:
+  - 0: 7
+- tileId: Plating
+  assignments:
+  - 0: 6
+- entity: Grille
+  assignments:
+  - 0: 5
+- entity: Firelock
+  assignments:
+  - 0: 4
+- entity: FirelockGlass
+  assignments:
+  - 0: 3
+- entity: FirelockEdge
+  assignments:
+  - 0: 2
+- entity: ReinforcedWindow
+  assignments:
+  - 0: 1
+- entity: Window
+  assignments:
+  - 0: 0
+- entity: WallReinforced
+  assignments:
+  - 1: 8
+- entity: WallSolid
+  assignments:
+  - 1: 7
+- entity: GasVentScrubber
+  assignments:
+  - 1: 6
+- entity: GasVentPump
+  assignments:
+  - 1: 5
+- entity: AirAlarm
+  assignments:
+  - 1: 4
+- entity: FireAlarm
+  assignments:
+  - 1: 3
+- entity: APCBasic
+  assignments:
+  - 1: 2
+- entity: CableApcExtension
+  assignments:
+  - 1: 1
+- entity: CableMV
+  assignments:
+  - 1: 0
+- entity: CableHV
+  assignments:
+  - 2: 8
+- entity: SubstationBasic
+  assignments:
+  - 2: 7
+- entity: Poweredlight
+  assignments:
+  - 2: 6
+- entity: PoweredSmallLight
+  assignments:
+  - 2: 5
+- entity: PoweredWarmSmallLight
+  assignments:
+  - 2: 4
+- entity: PoweredDimSmallLight
+  assignments:
+  - 2: 3
+- entity: EmergencyLight
+  assignments:
+  - 2: 2
+- entity: SMESBasic
+  assignments:
+  - 2: 1
+- entity: TableWood
+  assignments:
+  - 3: 8
+- entity: TableWoodReinforced
+  assignments:
+  - 3: 7
+- entity: Table
+  assignments:
+  - 3: 6
+- entity: TableReinforced
+  assignments:
+  - 3: 5
+- entity: TableGlass
+  assignments:
+  - 3: 4
+- entity: TablePlasmaGlass
+  assignments:
+  - 3: 3
+- entity: TableReinforcedPlasmaGlass
+  assignments:
+  - 3: 2
+- entity: ChairWood
+  assignments:
+  - 3: 1
+- entity: Chair
+  assignments:
+  - 3: 0
