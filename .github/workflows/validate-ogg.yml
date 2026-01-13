@@ -3,15 +3,9 @@ name: Validate OGG files
 on:
   push:
     branches: [ master, staging, stable ]
-    paths:
-      - "Resources/**/*.ogg"
-      - "Tools/_DH/validate_ogg.py"
   merge_group:
   pull_request:
     types: [ opened, reopened, synchronize, ready_for_review ]
-    paths:
-      - "Resources/**/*.ogg"
-      - "Tools/_DH/validate_ogg.py"
 
 jobs:
   validate-ogg:
