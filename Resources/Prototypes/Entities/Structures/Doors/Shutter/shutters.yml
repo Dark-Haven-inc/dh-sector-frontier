@@ -105,7 +105,7 @@
     mode: Diagonal
     key: walls
     base: state
-  # DH end
+  # DH-End
 
 - type: entity
   id: ShuttersNormal
