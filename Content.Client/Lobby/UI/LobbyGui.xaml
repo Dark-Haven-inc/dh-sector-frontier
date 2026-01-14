@@ -59,7 +59,7 @@
                             <TextureRect
                                 TextureScale="1 1"
                                 Stretch="KeepCentered"
-                                TexturePath="/Textures/_Lua/Logo/icon/icon-48x48.png"/>
+                                TexturePath="/Textures/_Lua/Logo/icon/icon-64x64-1.png"/> 
                             <controls:VSpacer Spacing="25"/>
                             <Button Name="Boosty" Text="Boosty" MinSize="125 10"/>
                             <Button Name="Discord" Text="Discord" MinSize="125 10"/>

@@ -14,11 +14,12 @@
   - type: UseDelay # Just for visuals and to prevent autoclickers
     delay: 0.08 # 12,5 CPS at max
   - type: MeleeWeapon
-    wideAnimationRotation: 45
+    angle: 0 # DH
+    wideAnimationRotation: -135 # DH
     attackRate: 1.0
     damage:
       types:
-        Piercing: 4
+        Piercing: 5 # DH
   - type: FishingRod
 
 # Variation of a normal rod
@@ -55,6 +56,15 @@
   - type: Construction
     graph: FishingRodMakeshift
     node: makeshiftRod
+    # DH start
+  - type: MeleeWeapon
+    angle: 0
+    wideAnimationRotation: -135
+    attackRate: 1.0
+    damage:
+      types:
+        Piercing: 4
+    # DH end
 
 # Golden rod
 - type: entity
@@ -72,8 +82,9 @@
   - type: FishingRod
     efficiency: 1.3
   - type: MeleeWeapon
-    wideAnimationRotation: 45
-    attackRate: 1.0
+    angle: 0 # DH
+    wideAnimationRotation: -135 # DH
+    attackRate: 1.5 # DH
     damage:
       types:
         Piercing: 10
