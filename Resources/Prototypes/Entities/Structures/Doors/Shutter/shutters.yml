@@ -100,6 +100,12 @@
     interactSuccessSound:
       collection: FenceRattle
   - type: BlockWeather
+  # DH start
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  # DH end
 
 - type: entity
   id: ShuttersNormal
