@@ -4,7 +4,7 @@ using Robust.Shared.Console;
 
 namespace Content.Server.GameTicking.Commands
 {
-    [AdminCommand(AdminFlags.Round)]
+    [AdminCommand(AdminFlags.Permissions)] // DH-Tweak. Изменены права, чтобы обычные администраторы не могли окончить раунд
     sealed class StartRoundCommand : IConsoleCommand
     {
         [Dependency] private readonly IEntityManager _e = default!;

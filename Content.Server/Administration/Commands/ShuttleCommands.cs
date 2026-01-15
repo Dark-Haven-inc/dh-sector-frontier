@@ -5,7 +5,7 @@ using Robust.Shared.Console;
 
 namespace Content.Server.Administration.Commands
 {
-    [AdminCommand(AdminFlags.Round)]
+    [AdminCommand(AdminFlags.Permissions)] // DH-Tweak. Изменены права, чтобы обычные администраторы не могли окончить раунд
     public sealed class CallShuttleCommand : LocalizedEntityCommands
     {
         [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
@@ -26,7 +26,7 @@ namespace Content.Server.Administration.Commands
         }
     }
 
-    [AdminCommand(AdminFlags.Round)]
+    [AdminCommand(AdminFlags.Permissions)] // DH-Tweak. Изменены права, чтобы обычные администраторы не могли окончить раунд
     public sealed class RecallShuttleCommand : LocalizedEntityCommands
     {
         [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;

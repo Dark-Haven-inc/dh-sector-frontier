@@ -1,0 +1,148 @@
+name: Publish Dark Haven (Windows)
+
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        fetch-tags: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install Python deps
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install lxml paramiko
+      shell: pwsh
+
+    - name: Restore dependencies
+      run: dotnet restore
+      shell: pwsh
+
+    - name: Build Packaging
+      run: dotnet build Content.Packaging --configuration Release --no-restore /m
+      shell: pwsh
+
+    - name: Package server (Windows)
+      run: dotnet run --project Content.Packaging server --platform win-x64
+      shell: pwsh
+
+    - name: Package client (Windows)
+      run: dotnet run --project Content.Packaging client --no-wipe-release
+      shell: pwsh
+
+    - name: Inject build.json (ADT-style)
+      run: python Tools/gen_build_info.py
+      shell: pwsh
+      env:
+        GITHUB_SHA: ${{ github.sha }}
+
+    - name: Arrange release directory
+      run: |
+        mkdir release\${{ github.sha }}
+        move release\*.zip release\${{ github.sha }}
+      shell: pwsh
+
+    - name: Upload builds via SCP / rsync
+      run: |
+        scp -r release/${{ github.sha }} user@dark-haven.xyz:/var/www/builds/
+      shell: pwsh
+
+
+
+# name: Publish Dark Haven (Windows)
+
+# concurrency:
+#   group: publish
+#   cancel-in-progress: true
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: windows-latest
+
+#     steps:
+#     - name: Fail if we are attempting to run on the master branch
+#       if: ${{ github.ref_name == 'master' && github.repository == 'space-wizards/space-station-14' }}
+#       run: exit 1
+#       shell: pwsh
+
+#     - uses: actions/checkout@v4.2.2
+#       with:
+#         submodules: recursive
+#         fetch-depth: 0
+#         fetch-tags: true
+
+#     - name: Setup .NET
+#       uses: actions/setup-dotnet@v4
+#       with:
+#         dotnet-version: 9.0.x
+
+#     - name: Install Python dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         python -m pip install requests paramiko lxml
+#       shell: pwsh
+
+#     - name: Restore dependencies
+#       run: dotnet restore
+#       shell: pwsh
+
+#     - name: Build Packaging
+#       run: dotnet build Content.Packaging --configuration Release --no-restore /m
+#       shell: pwsh
+
+#     - name: Package server (Windows)
+#       run: dotnet run --project Content.Packaging server --platform win-x64
+#       shell: pwsh
+
+#     - name: Package client (Windows)
+#       run: dotnet run --project Content.Packaging client --no-wipe-release
+#       shell: pwsh
+
+#     - name: Publish version to CDN
+#       run: python Tools/publish_multi_request.py
+#       shell: pwsh
+#       env:
+#         PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+#         GITHUB_REPOSITORY: ${{ vars.GITHUB_REPOSITORY }}
+
+
+
+
+    # - name: Publish changelog (Discord)
+    #   continue-on-error: true
+    #   run: python Tools/actions_changelogs_since_last_run.py
+    #   shell: pwsh
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     DISCORD_WEBHOOK_URL_LUA: ${{ secrets.CHANGELOG_DISCORD_LUA_WEBHOOK }}
+    #     DISCORD_WEBHOOK_URL_DS: ${{ secrets.CHANGELOG_DISCORD_DS_WEBHOOK }}
+
+
+    # - name: Publish changelog (RSS)
+    #   continue-on-error: true
+    #   run: Tools/actions_changelog_rss.py
+    #   env:
+    #     CHANGELOG_RSS_KEY: ${{ secrets.CHANGELOG_RSS_KEY }}

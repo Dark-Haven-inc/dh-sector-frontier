@@ -106,8 +106,10 @@
   - delete
   - pausemap
   - unpausemap
-  - restart
-  - shutdown
+  # DH-Tweak start. Изменены права, чтобы обычные администраторы не могли окончить раунд
+  # - restart
+  # - shutdown
+  # DH-Tweak end
 
 - Flags: SPAWN
   Commands:
