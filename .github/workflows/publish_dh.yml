@@ -50,8 +50,8 @@ jobs:
       run: dotnet run --project Content.Packaging client --no-wipe-release
       shell: pwsh
 
-    - name: Inject build.json (ADT-style)
-      run: python Tools/gen_build_info.py
+    - name: Inject build.json
+      run: python Tools/_DH/gen_build_info.py
       shell: pwsh
       env:
         GITHUB_SHA: ${{ github.sha }}
