@@ -28,7 +28,8 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        pip install paramiko lxml
+        python -m pip install --upgrade pip
+        python -m pip install requests paramiko lxml
       shell: pwsh
 
     - name: Restore dependencies
