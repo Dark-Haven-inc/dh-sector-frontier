@@ -38,7 +38,10 @@ namespace Content.Client.Voting.UI
 
         public Dictionary<StandardVoteType, CreateVoteOption> AvailableVoteOptions = new Dictionary<StandardVoteType, CreateVoteOption>()
         {
+            /* DH-Tweak start. Убрано, чтобы нельзя было окончить раунд по голосованию.
             { StandardVoteType.Restart, new CreateVoteOption("ui-vote-type-restart", new(), false, null) },
+            DH-Tweak end.
+            */
             { StandardVoteType.Preset, new CreateVoteOption("ui-vote-type-gamemode", new(), false, null) },
             { StandardVoteType.Map, new CreateVoteOption("ui-vote-type-map", new(), false, null) },
             { StandardVoteType.Votekick, new CreateVoteOption("ui-vote-type-votekick", new(), true, 0) }
@@ -67,11 +70,7 @@ namespace Content.Client.Voting.UI
             CloseButton.OnPressed += _ => Close();
             VoteNotTrustedLabel.Text = Loc.GetString("ui-vote-trusted-users-notice", ("timeReq", _cfg.GetCVar(CCVars.VotekickEligibleVoterDeathtime)));
 
-            foreach (StandardVoteType voteType in Enum.GetValues<StandardVoteType>())
-            {
-                var option = AvailableVoteOptions[voteType];
-                VoteTypeButton.AddItem(Loc.GetString(option.Name), (int)voteType);
-            }
+            foreach (var voteType in AvailableVoteOptions.Keys) // DH-Tweak start. Изменил перебор, чтобы не крашилось из-за отсутствующего варианта окончания раунда в словаре.
 
             _state.OnStateChanged += OnStateChanged;
             VoteTypeButton.OnItemSelected += VoteTypeSelected;

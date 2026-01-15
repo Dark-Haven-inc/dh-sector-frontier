@@ -5,7 +5,7 @@ using Robust.Shared.Console;
 
 namespace Content.Server.GameTicking.Commands
 {
-    [AdminCommand(AdminFlags.Round)]
+    [AdminCommand(AdminFlags.Permissions)] // DH-Tweak. Изменены права, чтобы обычные администраторы не могли окончить раунд
     public sealed class RestartRoundCommand : IConsoleCommand
     {
         [Dependency] private readonly IEntityManager _e = default!;
@@ -28,7 +28,7 @@ namespace Content.Server.GameTicking.Commands
         }
     }
 
-    [AdminCommand(AdminFlags.Round)]
+    [AdminCommand(AdminFlags.Permissions)] // DH-Tweak. Изменены права, чтобы обычные администраторы не могли окончить раунд
     public sealed class RestartRoundNowCommand : IConsoleCommand
     {
         [Dependency] private readonly IEntityManager _e = default!;
