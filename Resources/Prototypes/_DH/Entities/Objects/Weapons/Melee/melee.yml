@@ -1,0 +1,87 @@
+- type: entity
+  name: Mace
+  parent: [BaseC2ContrabandUnredeemable, BaseItem]
+  id: DHMace
+  description: A large and powerful hammer with a long handle. Pointed blows are significantly stronger.
+  components:
+  - type: Sprite
+    sprite: _DH/Objects/Weapons/Melee/mace.rsi
+    state: icon
+  - type: Item
+    size: Huge
+  - type: MeleeWeapon
+    range: 1.15
+    autoAttack: true
+    wideAnimation: DHWeaponArcMaceSlash
+    angle: 135
+    wideAnimationRotation: 220
+    bluntStaminaDamageFactor: 1.4
+    clickDamageModifier: 1.65
+    attackRate: 0.75
+    damage:
+      types:
+        Blunt: 7
+        Piercing: 1
+        Structural: 4
+    soundHit:
+      collection: mace
+  - type: Wieldable
+  - type: IncreaseDamageOnWield
+    damage:
+      types:
+        Blunt: 17
+        Piercing: 3
+        Structural: 18
+  - type: Tool
+    qualities:
+      - Prying
+    speedModifier: 0.8
+  - type: Clothing
+    sprite: Nyanotrasen/Objects/Weapons/Melee/breaching_hammer.rsi
+    quickEquip: false
+    slots:
+    - back
+    - suitStorage # Frontier - Same as axe
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 6
+  - type: StaminaDamageOnCollide
+    damage: 30
+
+- type: entity
+  id: DHWeaponArcMaceSmash
+  parent: WeaponArcStatic
+  categories: [ HideSpawnMenu ]
+  components:
+    - type: WeaponArcVisuals
+      fadeOut: false
+    - type: Sprite
+      state: smash
+      scale: 1.6, 1.6
+      color: "#fff4cf"
+    - type: TimedDespawn
+      lifetime: 0.3
+    - type: StaminaDamageOnCollide
+      damage: 50
+    - type: DamageOtherOnHit
+      damage:
+        types:
+          Blunt: 3
+
+- type: entity
+  id: DHWeaponArcMaceSlash
+  parent: WeaponArcStatic
+  categories: [ HideSpawnMenu ]
+  components:
+    - type: WeaponArcVisuals
+      animation: Slash
+    - type: Sprite
+      state: smash
+      scale: 1.6, 1.6
+      color: "#fff4cf"
+    - type: StaminaDamageOnCollide
+      damage: 50
+    - type: DamageOtherOnHit
+      damage:
+        types:
