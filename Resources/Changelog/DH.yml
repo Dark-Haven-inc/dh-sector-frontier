@@ -1,0 +1,95 @@
+Entries:
+- author: FiveStacan
+  changes:
+    - type: Add
+      message: DH content
+    - type: Add
+      message: Перевод сумок и мелочей.
+    - type: Tweak
+      message: Возвращены все старые шатты Фронтира и Луа.
+    - type: Tweak
+      message: ребаланс цен на все шаттлы (повышены).
+    - type: Tweak
+      message: Респрайт сумок шахтера, ботаника, химика, библиотекаря.
+  id: 1
+  time: '2025-10-15T12:00:00.0000000+00:00'
+- author: FiveStacan
+  changes:
+    - type: Add
+      message: перевод мелочей.
+    - type: Add
+      message: шезлонг.
+    - type: Add
+      message: Принтер книг, упаковки бумаги.
+    - type: Add
+      message: Множество новых полов (деревянные, угловая решетка, цифровой).
+    - type: Tweak
+      message: Перевод всех знаков с текстурами фронтира и некоторых обычных.
+    - type: Tweak
+      message: Респрайт некоторых настенных шкафов и настенного холодильника.
+    - type: Tweak
+      message: Респрайт некоторых ящиков и шкафов фронтир сборки.
+    - type: Tweak
+      message: Респрайт большенства гранат.
+    - type: Tweak
+      message: Респрайт настенных раздатчиков жидкостей.
+    - type: Remove
+      message: Удалены ЛГБТ флаги.
+  id: 2
+  time: '2025-10-25T12:00:00.0000000+00:00'
+- author: FiveStacan
+  changes:
+    - type: Add
+      message: Upstream to Lua
+    - type: Fix
+      message: Перевод и фикс мелочекй
+    - type: Tweak
+      message: Возвращена возможность гибать уроном!
+  id: 3
+  time: '2025-10-29T12:00:00.0000000+00:00'
+- author: FiveStacan
+  changes:
+    - type: Fix
+      message: Перевод и фикс мелочекй
+    - type: Fix
+      message: Исправлены спрайты некоторых консолей верфи (их клавиатуры)
+    - type: Add
+      message: РСУ атмоса и раздатчик труб
+    - type: Add
+      message: 3 новые ажигалки
+    - type: Add
+      message: Деревянный мостик
+    - type: Add
+      message: Хонк-Верфи для клоунских шаттлов на 1 апреля
+    - type: Add
+      message: Новые протокенетические ускорители и возвращение улучшений для них.
+    - type: Add
+      message: Полный набор страйкбольного снаряжения и возможность купить его на ТА.
+    - type: Add
+      message: Пластыри и пара реагентов к ним.
+    - type: Tweak
+      message: Возвращены и переведены многие товары консоли заказа грузов на ТА.
+    - type: Tweak
+      message: Эмбиент генераторов щитов и их звуки включения/выключения теперь тише и их слышно на меньшем расстоянии.
+  id: 4
+  time: '2025-10-30T12:00:00.0000000+00:00'
+- author: FiveStacan
+  changes:
+    - type: Add
+      message: Апстрим
+    - type: Add
+      message: Страйкбольный набор покупаемый на ТА из 3 ящиков.
+    - type: Fix
+      message: Мелкие ошибки
+  id: 5
+  time: '2025-11-15T12:00:00.0000000+00:00'
+- author: FiveStacan
+  changes:
+    - type: Add
+      message: Расширенный и блюспейс топливные баки ДАМ
+    - type: Add
+      message: Сектор космической тюрьмы
+    - type: Add
+      message: M16A4, Famas, AKMS, AKM-U, STG 44
+  id: 6
+  time: '2025-11-17T12:00:00.0000000+00:00'

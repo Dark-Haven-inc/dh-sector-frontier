@@ -103,6 +103,26 @@
       behaviors:
       - !type:DoActsBehavior { acts: [ Destruction ] }
 
+#DH PrisonSector
+- type: entity
+  parent: CoordinatesDisk
+  id: CoordinatesDiskPrison
+  name: coordinates disk (Prison)
+  components:
+  - type: StarMapCoordinatesDisk
+    allowedSectors:
+    - Prison Sector
+    allowedSectorIds:
+    - PrisonSector
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior { acts: [ Destruction ] }
+
 - type: entity
   parent: CoordinatesDisk
   id: CoordinatesDiskDEBUG

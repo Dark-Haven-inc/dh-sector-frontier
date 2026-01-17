@@ -275,7 +275,11 @@ public sealed partial class StarmapSystem : SharedStarmapSystem
                 var asteroidIdx = stars.FindIndex(s => s.Map == asteroidMap);
                 if (asteroidIdx >= 0)
                 {
+<<<<<<< HEAD
                     var mainSectors = new[] { "TypanSector", "PirateSector", "MercenarySector", "LuaTechSector" };
+=======
+                    var mainSectors = new[] { "TypanSector", "PirateSector", "MercenarySector", "PrisonSector" }; //DH PrisonSector
+>>>>>>> b34311cc0e (DH 18-11)
                     foreach (var sectorId in mainSectors)
                     {
                         if (_sectors.TryGetMapId(sectorId, out var sectorMap))

@@ -216,6 +216,7 @@ public sealed class ShipyardLuaRulesTests
         { VesselClass.Mercenary, new[] { "ComputerShuttleWithMercenaryDisk", "ComputerTabletopShuttleWithMercenaryDisk" } },
         { VesselClass.Syndicate, new[] { "ComputerShuttleWithNordfallDisk", "ComputerTabletopShuttleWithNordfallDisk" } },
         { VesselClass.Pirate, new[] { "ComputerShuttleWithPirateDisk", "ComputerTabletopShuttleWithPirateDisk" } },
+        { VesselClass.Prison, new[] { "ComputerShuttleWithMercenaryDisk", "ComputerTabletopShuttleWithMercenaryDisk" } },
     };
 
     private static readonly Dictionary<VesselClass, string[]> FactionDisks = new()
@@ -226,6 +227,7 @@ public sealed class ShipyardLuaRulesTests
         { VesselClass.Mercenary, new[] { "CoordinatesDiskMercenary" } },
         { VesselClass.Syndicate, new[] { "CoordinatesDiskNordfall" } },
         { VesselClass.Pirate, new[] { "CoordinatesDiskPirate" } },
+        { VesselClass.Prison, new[] { "CoordinatesDiskPrison" } },
     };
 
     private static readonly string[] ForbiddenDisksAll =

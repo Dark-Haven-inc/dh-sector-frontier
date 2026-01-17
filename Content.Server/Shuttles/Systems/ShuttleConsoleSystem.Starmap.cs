@@ -205,6 +205,7 @@ public sealed partial class ShuttleConsoleSystem
                 ftlTime = default;
             }
         }
+<<<<<<< HEAD
         foreach (var sid in new[] { "AsteroidSectorDefault", "MercenarySector", "PirateSector", "TypanSector", "LuaTechSector" })
         {
             if (_sectors.TryGetMapId(sid, out var mid))
@@ -220,6 +221,10 @@ public sealed partial class ShuttleConsoleSystem
                 if (altId != null && _sectors.TryGetMapId(altId, out mid) && !sectorIdByMap.ContainsKey(mid)) sectorIdByMap[mid] = altId;
             }
         }
+=======
+        foreach (var sid in new[] { "AsteroidSectorDefault", "MercenarySector", "PirateSector", "TypanSector", "PrisonSector" }) //DH PrisonSector
+        { if (_sectors.TryGetMapId(sid, out var mid) && !sectorIdByMap.ContainsKey(mid)) sectorIdByMap[mid] = sid; }
+>>>>>>> b34311cc0e (DH 18-11)
         if (allowCentComStar && _centcomm.CentComMap != MapId.Nullspace)
         {
             var frontierIdx = stars.FindIndex(s => s.Map == _ticker.DefaultMap);

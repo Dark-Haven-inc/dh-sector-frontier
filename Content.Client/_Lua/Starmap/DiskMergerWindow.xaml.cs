@@ -57,6 +57,7 @@ public sealed partial class DiskMergerWindow : DefaultWindow
             case "TypanSector": return Loc.GetString("sector-name-TypanSector");
             case "LuaTechSector": return Loc.GetString("sector-name-LuaTechSector");
             case "CentCom": return Loc.GetString("sector-name-CentCom");
+            case "PrisonSector": return Loc.GetString("sector-name-PrisonSector"); //DH PrisonSector
             default: return idOrName;
         }
     }

@@ -8,7 +8,7 @@ namespace Content.Shared.SprayPainter.Components;
 /// </summary>
 [RegisterComponent, NetworkedComponent]
 [AutoGenerateComponentState, AutoGenerateComponentPause]
-public sealed partial class PaintedComponent : Component
+public sealed partial class SprayPaintedComponent : Component
 {
     /// <summary>
     /// The time after which the entity is dried and does not appear as "freshly painted".

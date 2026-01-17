@@ -1,0 +1,229 @@
+- type: entity
+  parent: VendingMachineCart
+  id: VendingMachineCartPrison
+  name: ПТех
+  suffix: Prison
+  components:
+  - type: VendingMachine
+    pack: PTechPrisonInventory
+  - type: AccessReader
+    access: [["HeadOfPrison"]]
+
+- type: entity
+  parent: VendingMachine
+  id: VendingMachinePrisonDrobe
+  name: ТюремШкаф
+  description: Торговый автомат для одежды, связанной с охраной и безопасностью!
+  components:
+  - type: VendingMachine
+    pack: PrisonDrobeInventory
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    denyState: deny-unshaded
+#  - type: Advertise
+#    pack: SecDrobeAds
+  - type: SpeakOnUIClosed
+    pack: GenericVendGoodbyes
+  - type: Sprite
+    sprite: _DH/Structures/Machines/VendingMachines/prisondrobe.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#d84c29"
+  - type: AccessReader
+    access: [["Security"]]
+
+- type: entity
+  parent: VendingMachine
+  id: VendingMachinePrison
+  name: ТюрьмаТех
+  description: Торговый автомат с экпипировкой охраны. На табличке написано "ТОЛЬКО ДЛЯ СОТРУДНИКОВ КТ".
+  components:
+  - type: VendingMachine
+    pack: PrisonTechInventory
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
+#  - type: Advertise
+#    pack: SecTechAds
+  - type: SpeakOnUIClosed
+    pack: SecTechGoodbyes
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/sec.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: AccessReader
+    access: [["Security"]]
+  - type: MarketModifier # Frontier
+    mod: 5 # Frontier
+  - type: PointLight
+    radius: 1
+    energy: 1.2
+    color: "#c45a31"
+  - type: GuideHelp
+    guides:
+    - Security
+    # - Antagonists # Frontier: removed guidebook entry
+
+- type: entity
+  parent: VendingMachineSnack
+  id: VendingMachinePrisonersClothing
+  name: ЗекШкаф
+  description: Нестерильный автомат для выдачи одежды, связанной с зеками.
+  components:
+  - type: SpeakOnUIClosed
+    enabled: false
+#  - type: Advertise
+#    enabled: false
+  - type: VendingMachine
+    pack: prisonersclothingInventory
+    dispenseOnHitChance: 0.25
+    dispenseOnHitThreshold: 2
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
+    initialStockQuality: 1
+  - type: Sprite
+    sprite: _DH/Structures/Machines/VendingMachines/prisonersclothing.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#737785"
+
+- type: entity
+  parent: VendingMachineSnack
+  id: DHVendingMachineSustenance
+  suffix: Prison
+  name: тюремный торгомат
+  description: Торговый автомат, который реализует продукты питания, как того требует раздел 47-C Соглашения об этическом обращении с заключёнными NT.
+  components:
+  - type: SpeakOnUIClosed
+    enabled: false
+#  - type: Advertise
+#    enabled: false
+  - type: VendingMachine
+    pack: DHSustenanceInventory
+    dispenseOnHitChance: 0.25
+    dispenseOnHitThreshold: 2
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
+    initialStockQuality: 1
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/sustenance.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#737785"
+
+- type: entity
+  parent: VendingMachineSnack
+  id: VendingMachineTroll
+  name: ТролльВенд
+  description: Торговый автомат для тролльей.
+  components:
+  - type: SpeakOnUIClosed
+    enabled: false
+#  - type: Advertise
+#    enabled: false
+  - type: VendingMachine
+    pack: TrollInventory
+    dispenseOnHitChance: 0.25
+    dispenseOnHitThreshold: 2
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
+    initialStockQuality: 1
+  - type: Sprite
+    sprite: _DH/Structures/Machines/VendingMachines/trollvend.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#b31414"
+
+- type: entity
+  parent: VendingMachine
+  id: BackmenVendingLootBox
+  name: ЛутБоксы
+  suffix: backmen
+  description: Испытайте удачу и откройте свой лутбокс!
+  components:
+    - type: VendingMachine
+      pack: VendingLootboxInventory
+      dispenseOnHitChance: 0.00001
+      dispenseOnHitThreshold: 5000
+      offState: off
+      brokenState: broken
+      normalState: normal-unshaded
+#    - type: Advertise
+#      pack: AmmoVendAds
+    - type: Speech
+    - type: Sprite
+      sprite: _DH/Structures/Machines/VendingMachines/lootbox.rsi
+      layers:
+        - state: "off"
+          map: ["enum.VendingMachineVisualLayers.Base"]
+        - state: "off"
+          map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+          shader: unshaded
+        - state: panel
+          map: ["enum.WiresVisualLayers.MaintenancePanel"]
+    - type: PointLight
+      radius: 1.5
+      energy: 1.6
+      color: "#6148c7"
+    - type: ActivatableUI
+      key: enum.StoreUiKey.Key
+      singleUser: true
+    - type: ActivatableUIRequiresPower
+    - type: UserInterface
+      interfaces:
+        enum.StoreUiKey.Key:
+          type: StoreBoundUserInterface

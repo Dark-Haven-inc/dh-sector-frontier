@@ -8,6 +8,7 @@
   },
   "rsic": false,
   "states": [
+<<<<<<< HEAD
     {
       "name": "icon"
     },
@@ -40,3 +41,37 @@
     }
   ]
 }
+=======
+        {
+            "name": "icon"
+        },
+        {
+            "name": "icon_flipped"
+        },
+        {
+            "name": "equipped-HELMET",
+            "directions": 4
+        },
+        {
+            "name": "inhand-left",
+            "directions": 4
+        },
+        {
+            "name": "inhand-right",
+            "directions": 4
+        },
+        {
+            "name": "flipped-equipped-HELMET",
+            "directions": 4
+        },
+        {
+            "name": "flipped-inhand-left",
+            "directions": 4
+        },
+        {
+            "name": "flipped-inhand-right",
+            "directions": 4
+        }
+    ]
+}
+>>>>>>> b34311cc0e (DH 18-11)

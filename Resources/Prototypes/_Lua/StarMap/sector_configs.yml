@@ -109,6 +109,20 @@
   starmapPosition: -6.8, -6.2
   starmapColor: "#182faf"
 
+#DH
+- type: sectorSystemPrototype
+  id: PrisonSector
+  name: "Сектор КТ"
+  station: MercMap
+  worldgenConfig: Default
+  autoStart: true
+  defaultGamePreset: NFPirates
+  parallaxPool: [ MercenaryPlanet, LuaDarkSpace, LuaSpace, AspidParallax, BagelStation, CoreStation, OriginStation, TrainStation, KettleStation, Sky, Asteroids, Default ]
+  deadDropEnabled: true
+  deadDropCount: 1
+  starmapPosition: -3.3, 3.1
+  starmapColor: "#be6029"
+
 - type: sectorSystemPrototype
   id: ShipVsShipRed
   name: "Сектор Красных"
